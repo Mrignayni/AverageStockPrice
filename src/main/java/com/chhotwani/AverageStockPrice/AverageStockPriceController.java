@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import java.util.Set;
+import java.util.TreeSet;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class AverageStockPriceController {
@@ -26,23 +27,33 @@ public class AverageStockPriceController {
 
 
     @RequestMapping(value = "/AverageStockPrice/ticker/{ticker}/ndays/{ndays}", method = RequestMethod.GET)
-    public Stock averageStockPrice(@PathVariable String ticker, @PathVariable int ndays){
+    public String averageStockPrice(@PathVariable String ticker, @PathVariable int ndays){
 
         Stock stock = getStockData(ticker);
-        return stock;
-        //return new String(ticker + " " + Integer.toString(ndays));
+        double[] closingPriceArray = new double[ndays];
+        Set set = stock.getTimeSeries().getData().entrySet();
+        Iterator i = set.iterator();
+        double averagePrice = 0;
+        for(int j = 0; j<ndays ; j++){
+            Map.Entry entry = (Map.Entry) i.next();
+            Day day = (Day) entry.getValue();
+            closingPriceArray[j] = day.getClose();
+            averagePrice+=day.getClose();
+        }
+        averagePrice = averagePrice/ndays;
+        return (ticker + " data = " + Arrays.toString(closingPriceArray) + ", average = " + Double.toString(averagePrice));
+
     }
 
     public Stock getStockData(String ticker){
-        String apiKey = System.getenv().getOrDefault("API_KEY", "demo");
-        apiKey = apiKey == null ? "demo" : apiKey;
+        String apiKey = System.getenv().getOrDefault("API_KEY", "\"C227WD9W3LUVKVV9\"");
+        apiKey = apiKey == null ? "\"C227WD9W3LUVKVV9\"" : apiKey;
         Map<String, String> param = new HashMap<>();
         param.put("apikey", apiKey);
         param.put("ticker", ticker);
 
-        Stock stockJson = restTemplate.getForObject(GET_STOCK_TIME_SERIES, Stock.class, param );
-
-        return stockJson;
+        Stock stock = restTemplate.getForObject(GET_STOCK_TIME_SERIES, Stock.class, param );
+        return stock;
 
     }
 
