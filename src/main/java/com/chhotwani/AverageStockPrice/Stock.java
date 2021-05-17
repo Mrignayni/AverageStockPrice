@@ -3,16 +3,11 @@ package com.chhotwani.AverageStockPrice;
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-//import java.util.HashMap;
+
 
 @JsonIgnoreProperties(value = { "Meta Data" })
-public class Stock implements Serializable { //extends Dto{
+public class Stock implements Serializable {
 
-//    @JsonProperty("Meta Data")
-//    @JsonIgnore
-//    private HashMap<String, String> metaData;
 
     @JsonProperty("Time Series (Daily)")
     private TimeSeries timeSeries;

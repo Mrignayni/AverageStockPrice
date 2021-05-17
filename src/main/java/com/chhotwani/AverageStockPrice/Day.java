@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Day implements Serializable { //extends Dto{
+public class Day implements Serializable {
 
     @JsonProperty("1. open")
     private double open;
