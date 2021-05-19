@@ -43,8 +43,8 @@ public class AverageStockPriceController {
     }
 
     public Stock getStockData(String ticker){
-        String apiKey = System.getenv().getOrDefault("API_KEY", "\"C227WD9W3LUVKVV9\"");
-        apiKey = apiKey == null ? "\"C227WD9W3LUVKVV9\"" : apiKey;
+        String apiKey = System.getenv().getOrDefault("API_KEY", "demo");
+        //apiKey = apiKey == null ? "\"C227WD9W3LUVKVV9\"" : apiKey;
         Map<String, String> param = new HashMap<>();
         param.put("apikey", apiKey);
         param.put("ticker", ticker);
